@@ -1,5 +1,6 @@
 # Mouse-Tool
 A tool that tracks mouse inputs and stores information such as Raycast hits and last click position. Also has a bunch of events you can subscribe to.
+![alt text](https://github.com/Genso-0/Mouse-Tool/blob/main/Assets/MouseTool/Project%20Information/VJx4LXXDfN.gif)
 ### Built With
 Unity 2020.1.4f1 
 Built-in Render Pipeline
