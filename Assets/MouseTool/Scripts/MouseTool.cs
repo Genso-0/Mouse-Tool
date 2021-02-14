@@ -56,12 +56,16 @@ namespace Mouse_Tool
                 initialized = true;
                 mouseData = new MouseData();
                 description = GetComponentInChildren<Text>();
+                SetScreenText(debugText);
                 BeginMouseTracking();
 #if UNITY_EDITOR
                 CheckDefines();
 #endif
             }
         }
+
+
+
         void Start()
         {
             Init();
@@ -74,6 +78,8 @@ namespace Mouse_Tool
         {
             while (run)
             {
+                if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha1))
+                    ToggleScreenText();
                 if (fireRay)
                     CastRay();
                 HandleButton(0, ref mouseData.left);
@@ -82,6 +88,16 @@ namespace Mouse_Tool
                     FillInMouseDescriptionText();
                 yield return null;
             }
+        }
+        public void ToggleScreenText()
+        {
+            SetScreenText(!debugText);
+            debugText = !debugText;
+        }
+        private void SetScreenText(bool debugText)
+        {
+            var canvas = transform.GetChild(0);
+            canvas.gameObject.SetActive(debugText);
         }
         private void HandleButton(int button, ref MouseButtonData mouseButtonData)
         {
@@ -226,7 +242,7 @@ namespace Mouse_Tool
             for (int i = 0; i < split_defines.Length; i++)
             {
                 if (split_defines[i] == "LOG")
-                    contains = true; 
+                    contains = true;
             }
             if (!contains && logs)
                 UnityEngine.Debug.Log("The logs functionality requires for you " +
