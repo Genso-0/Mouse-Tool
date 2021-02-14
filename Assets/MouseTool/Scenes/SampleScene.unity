@@ -695,6 +695,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: debugText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: runOnStartup
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5078182768529597347, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.661738
@@ -743,20 +751,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MouseTool
       objectReference: {fileID: 0}
-    - target: {fileID: 5351345384911138964, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 400
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867595914912437421, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_Color.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867595914912437421, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_Color.g
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7867595914912437421, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_Color.b
+    - target: {fileID: 5078182768689386809, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
