@@ -703,6 +703,22 @@ PrefabInstance:
       propertyPath: runOnStartup
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: receivingInput
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: debug_ScreenText
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: debug_logs
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: running
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5078182768529597347, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.661738

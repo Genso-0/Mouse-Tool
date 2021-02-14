@@ -31,13 +31,15 @@ namespace Mouse_Tool
         IEnumerator routine_mouseTracking;
         public MouseData mouseData;
         public float differentiateBetweenSingleClickAndDrag_sensitivity = 0.2f;
-        public bool runOnStartup;
-        bool run;
-        public bool fireRay;
-        public bool logs;
-        public bool debugText;
+     
+        [Tooltip("Calls  BeginMouseTracking() at startup.")]public bool runOnStartup;
+        [Tooltip("Toggle: Allows for toggling of MouseTool settings using key inputs LeftAlt + 1, 2, 3, 4.")] public bool receivingInput;
+        [Tooltip("Shows current state of MouseTool.MouseTracking(). Read only")] public bool running;
+        [Tooltip("Toggle: State of ray firing.")] public bool fireRay;
+        [Tooltip("Toggle: State of debug logs in the console")] public bool debug_logs;
+        [Tooltip("Toggle: State of debug text on screen")] public bool debug_ScreenText;
         Text description;
-
+        bool run;
         public delegate void OnMouseDown();
         public delegate void OnMouseUp();
         public delegate void OnMouseDrag();
@@ -73,26 +75,39 @@ namespace Mouse_Tool
         }
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha1))
-                ToggleMouseTracking();
-            if (run)
-                if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha2))
-                    ToggleScreenText();
+            running = run;
+            if (receivingInput && Input.GetKey(KeyCode.LeftAlt))
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                    ToggleMouseTracking();
+                if (run)
+                {
+                    if (Input.GetKeyDown(KeyCode.Alpha2))
+                        ToggleDebugRayCast(); 
+                    if (Input.GetKeyDown(KeyCode.Alpha3))
+                        ToggleDebugLogs();
+                    if (Input.GetKeyDown(KeyCode.Alpha4))
+                        ToggleScreenText();
+                }
+            }
         }
+
+
+
         void OnApplicationQuit()
         {
             EndMouseTracking();
         }
         IEnumerator MouseTracking()
         {
-            SetScreenTextActiveState(debugText);
+            SetScreenTextActiveState(debug_ScreenText);
             while (run)
             {
                 if (fireRay)
                     CastRay();
                 HandleButton(0, ref mouseData.left);
                 HandleButton(1, ref mouseData.right);
-                if (debugText)
+                if (debug_ScreenText)
                     FillInMouseDescriptionText();
                 yield return null;
             }
@@ -104,10 +119,18 @@ namespace Mouse_Tool
             else
                 BeginMouseTracking();
         }
+        private void ToggleDebugRayCast()
+        {
+            fireRay = !fireRay;
+        }
+        private void ToggleDebugLogs()
+        {
+            debug_logs = !debug_logs;
+        }
         public void ToggleScreenText()
         {
-            SetScreenTextActiveState(!debugText);
-            debugText = !debugText;
+            SetScreenTextActiveState(!debug_ScreenText);
+            debug_ScreenText = !debug_ScreenText;
         }
         void SetScreenTextActiveState(bool debugText)
         {
@@ -262,14 +285,14 @@ namespace Mouse_Tool
                 if (split_defines[i] == "LOG")
                     contains = true;
             }
-            if (!contains && logs)
+            if (!contains && debug_logs)
                 UnityEngine.Debug.Log("The logs functionality requires for you " +
                     "to have set a define symbol \"LOG\" in Project Settings -> Player -> Scripting Define Symbols. If you do not then the logs methods will not compile.");
         }
         [Conditional("LOG")]
         void Log(string message)
         {
-            if (logs)
+            if (debug_logs)
             {
                 UnityEngine.Debug.Log(message);
             }
@@ -277,7 +300,7 @@ namespace Mouse_Tool
         [Conditional("LOG")]
         void LogError(string message)
         {
-            if (logs)
+            if (debug_logs)
             {
                 UnityEngine.Debug.LogError(message);
             }
