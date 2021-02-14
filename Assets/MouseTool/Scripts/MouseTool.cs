@@ -31,7 +31,8 @@ namespace Mouse_Tool
         IEnumerator routine_mouseTracking;
         public MouseData mouseData;
         public float differentiateBetweenSingleClickAndDrag_sensitivity = 0.2f;
-        public bool run;
+        public bool runOnStartup;
+        bool run;
         public bool fireRay;
         public bool logs;
         public bool debugText;
@@ -56,19 +57,27 @@ namespace Mouse_Tool
                 initialized = true;
                 mouseData = new MouseData();
                 description = GetComponentInChildren<Text>();
-                SetScreenText(debugText);
-                BeginMouseTracking();
+                if (runOnStartup)
+                    BeginMouseTracking();
+                else
+                    SetScreenTextActiveState(false);
 #if UNITY_EDITOR
                 CheckDefines();
 #endif
             }
         }
 
-
-
         void Start()
         {
             Init();
+        }
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha1))
+                ToggleMouseTracking();
+            if (run)
+                if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha2))
+                    ToggleScreenText();
         }
         void OnApplicationQuit()
         {
@@ -76,10 +85,9 @@ namespace Mouse_Tool
         }
         IEnumerator MouseTracking()
         {
+            SetScreenTextActiveState(debugText);
             while (run)
             {
-                if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.Alpha1))
-                    ToggleScreenText();
                 if (fireRay)
                     CastRay();
                 HandleButton(0, ref mouseData.left);
@@ -89,17 +97,24 @@ namespace Mouse_Tool
                 yield return null;
             }
         }
+        public void ToggleMouseTracking()
+        {
+            if (run)
+                EndMouseTracking();
+            else
+                BeginMouseTracking();
+        }
         public void ToggleScreenText()
         {
-            SetScreenText(!debugText);
+            SetScreenTextActiveState(!debugText);
             debugText = !debugText;
         }
-        private void SetScreenText(bool debugText)
+        void SetScreenTextActiveState(bool debugText)
         {
             var canvas = transform.GetChild(0);
             canvas.gameObject.SetActive(debugText);
         }
-        private void HandleButton(int button, ref MouseButtonData mouseButtonData)
+        void HandleButton(int button, ref MouseButtonData mouseButtonData)
         {
             if (Input.GetMouseButtonDown(button))
             {
@@ -153,7 +168,7 @@ namespace Mouse_Tool
             }
 
         }
-        private void FillInMouseDescriptionText()
+        void FillInMouseDescriptionText()
         {
             if (mouseData.detectedSomething)
                 description.text = $"Left button state: {mouseData.left.frameState}\n" +
@@ -199,17 +214,20 @@ namespace Mouse_Tool
             //articulationBody: The ArticulationBody of the collider that was hit. If the collider is not attached to an articulation body then it is null.
             //lightmapCoord:  The uv lightmap coordinate at the impact point.
         }
-        public void BeginMouseTracking()
+        void BeginMouseTracking()
         {
             routine_mouseTracking = MouseTracking();
+            run = true;
             StartCoroutine(routine_mouseTracking);
         }
-        public void EndMouseTracking()
+        void EndMouseTracking()
         {
             if (routine_mouseTracking != null)
             {
                 StopCoroutine(routine_mouseTracking);
                 routine_mouseTracking = null;
+                run = false;
+                SetScreenTextActiveState(false);
             }
         }
         public class MouseData
