@@ -13,7 +13,7 @@ C#
  
 <!-- USAGE EXAMPLES -->
 ## Usage
-See [ExampleListeningScript.cs](https://github.com/Genso-0/Mesh-Gizmos/blob/master/Assets/Mouse-Tool/Scripts/ExampleListeningScript.cs) for usage examples.
+See [ExampleListeningScript.cs](https://github.com/Genso-0/Mouse-Tool/blob/main/Assets/MouseTool/Scripts/ExampleListeningScript.cs) for usage examples.
 
 <!-- LICENSE -->
 ## License
