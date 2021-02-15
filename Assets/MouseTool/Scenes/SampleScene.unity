@@ -150,7 +150,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160302716}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
@@ -766,6 +766,10 @@ PrefabInstance:
     - target: {fileID: 5078182768529597357, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_Name
       value: MouseTool
+      objectReference: {fileID: 0}
+    - target: {fileID: 5078182768529597357, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5078182768689386809, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_IsActive

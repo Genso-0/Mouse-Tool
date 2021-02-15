@@ -67,8 +67,7 @@ namespace Mouse_Tool
                 CheckDefines();
 #endif
             }
-        }
-
+        } 
         void Start()
         {
             Init();
@@ -91,9 +90,6 @@ namespace Mouse_Tool
                 }
             }
         }
-
-
-
         void OnApplicationQuit()
         {
             EndMouseTracking();

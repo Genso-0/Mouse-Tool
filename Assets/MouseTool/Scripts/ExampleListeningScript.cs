@@ -1,10 +1,10 @@
 ﻿
+using System.Collections;
 using UnityEngine;
 namespace Mouse_Tool
 {
     public class ExampleListeningScript : MonoBehaviour
     {
-        // Start is called before the first frame update
         void Start()
         {
             var mouseTool = MouseTool.Instance;
@@ -17,7 +17,6 @@ namespace Mouse_Tool
             mouseTool.onMouseDrag_Left += DoSomethingOnMouseLeftDrag;
             mouseTool.onMouseDrag_Right += DoSomethingOnMouseRightDrag;
         }
-
         void DoSomethingOnMouseLeftDown()
         {
             Debug.Log("I listened in on mouse Left down");
