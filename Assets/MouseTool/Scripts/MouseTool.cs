@@ -30,108 +30,77 @@ namespace Mouse_Tool
         #endregion
         IEnumerator routine_mouseTracking;
         public MouseData mouseData;
-        public float differentiateBetweenSingleClickAndDrag_sensitivity = 0.2f;
-     
-        [Tooltip("Calls  BeginMouseTracking() at startup.")]public bool runOnStartup;
-        [Tooltip("Toggle: Allows for toggling of MouseTool settings using key inputs LeftAlt + 1, 2, 3, 4.")] public bool receivingInput;
-        [Tooltip("Shows current state of MouseTool.MouseTracking(). Read only")] public bool running;
-        [Tooltip("Toggle: State of ray firing.")] public bool fireRay;
-        [Tooltip("Toggle: State of debug logs in the console")] public bool debug_logs;
-        [Tooltip("Toggle: State of debug text on screen")] public bool debug_ScreenText;
-        Text description;
+        public MouseTool_Settings settings;
+        public MouseTool_Debug debug;
+
         bool run;
-        public delegate void OnMouseDown();
-        public delegate void OnMouseUp();
-        public delegate void OnMouseDrag();
-
-        public event OnMouseDown onMouseDown_Left;
-        public event OnMouseDown onMouseDown_Right;
-
-        public event OnMouseUp onMouseUp_Left;
-        public event OnMouseUp onMouseUp_Right;
-
-        public event OnMouseDrag onMouseDrag_Left;
-        public event OnMouseDrag onMouseDrag_Right;
+        public event Action onMouseDown_Left;
+        public event Action onMouseDown_Right;
+        public event Action onMouseUp_Left;
+        public event Action onMouseUp_Right;
+        public event Action onMouseDrag_Left;
+        public event Action onMouseDrag_Right;
         void Init()
         {
             if (!initialized)
             {
                 initialized = true;
                 mouseData = new MouseData();
-                description = GetComponentInChildren<Text>();
-                if (runOnStartup)
+                debug.InitText(GetComponentInChildren<Text>());
+                if (settings.runOnStartup)
                     BeginMouseTracking();
                 else
-                    SetScreenTextActiveState(false);
+                    debug.SetScreenTextActiveState(transform, false);
 #if UNITY_EDITOR
-                CheckDefines();
+                debug.CheckDefines();
 #endif
             }
-        } 
+        }
         void Start()
         {
             Init();
         }
         void Update()
         {
-            running = run;
-            if (receivingInput && Input.GetKey(KeyCode.LeftAlt))
+            debug.MouseTrackingIsActive = run;
+            if (settings.receivingInput && Input.GetKey(KeyCode.LeftShift))
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                     ToggleMouseTracking();
                 if (run)
                 {
                     if (Input.GetKeyDown(KeyCode.Alpha2))
-                        ToggleDebugRayCast(); 
+                        debug.ToggleDebugText(transform);
                     if (Input.GetKeyDown(KeyCode.Alpha3))
-                        ToggleDebugLogs();
+                        debug.ToggleDebugRayCast();
                     if (Input.GetKeyDown(KeyCode.Alpha4))
-                        ToggleScreenText();
+                        debug.ToggleDebugLogs();
+                    if (Input.GetKeyDown(KeyCode.Alpha5))
+                        debug.ToggleDebugTouchPoints();
                 }
             }
-        }
-        void OnApplicationQuit()
-        {
-            EndMouseTracking();
+            else if(settings.receivingInput)
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha1))
+                    ToggleMousePositionTracking();
+            }
         }
         IEnumerator MouseTracking()
         {
-            SetScreenTextActiveState(debug_ScreenText);
+            debug.SetScreenTextActiveState(transform, debug.debug_text);
             while (run)
             {
-                if (fireRay)
-                    CastRay();
+                if (settings.trackMousePositionOnScreen)
+                    mouseData.mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                HandleRays();
+
                 HandleButton(0, ref mouseData.left);
                 HandleButton(1, ref mouseData.right);
-                if (debug_ScreenText)
-                    FillInMouseDescriptionText();
+
+                debug.FillInMouseDescriptionText(mouseData);
                 yield return null;
             }
-        }
-        public void ToggleMouseTracking()
-        {
-            if (run)
-                EndMouseTracking();
-            else
-                BeginMouseTracking();
-        }
-        private void ToggleDebugRayCast()
-        {
-            fireRay = !fireRay;
-        }
-        private void ToggleDebugLogs()
-        {
-            debug_logs = !debug_logs;
-        }
-        public void ToggleScreenText()
-        {
-            SetScreenTextActiveState(!debug_ScreenText);
-            debug_ScreenText = !debug_ScreenText;
-        }
-        void SetScreenTextActiveState(bool debugText)
-        {
-            var canvas = transform.GetChild(0);
-            canvas.gameObject.SetActive(debugText);
         }
         void HandleButton(int button, ref MouseButtonData mouseButtonData)
         {
@@ -151,9 +120,9 @@ namespace Mouse_Tool
                     default:
                         break;
                 }
-                Log($"Mouse button {button} was clicked");
+                debug.Log($"Mouse button {button} was clicked");
             }
-            else if (Input.GetMouseButton(button) && Time.realtimeSinceStartup - mouseButtonData.mostRecentClickTime > differentiateBetweenSingleClickAndDrag_sensitivity)
+            else if (Input.GetMouseButton(button) && Time.realtimeSinceStartup - mouseButtonData.mostRecentClickTime > settings.differentiateBetweenSingleClickAndDrag_sensitivity)
             {
                 mouseButtonData.frameState = MouseButtonData.ButtonFrameState.Dragging;
                 switch (button)
@@ -167,7 +136,7 @@ namespace Mouse_Tool
                     default:
                         break;
                 }
-                Log($"Mouse button {button} is being held down");
+                debug.Log($"Mouse button {button} is being held down");
             }
             if (Input.GetMouseButtonUp(button))
             {
@@ -183,43 +152,30 @@ namespace Mouse_Tool
                     default:
                         break;
                 }
-                Log($"Mouse button {button} was released");
+                debug.Log($"Mouse button {button} was released");
             }
-
         }
-        void FillInMouseDescriptionText()
+        void HandleRays()
         {
-            if (mouseData.detectedSomething)
-                description.text = $"Left button state: {mouseData.left.frameState}\n" +
-                                   $"Right button state: {mouseData.right.frameState}\n" +
-                                   $"Detected: {mouseData.mouseHit.collider.gameObject.name}\n" +
-                                   $"Point: {mouseData.mouseHit.point}\n" +
-                                   $"Normal: {mouseData.mouseHit.normal}\n" +
-                                   $"BarycentricCoordinate: {mouseData.mouseHit.barycentricCoordinate}\n" +
-                                   $"Distance from ray origin: {mouseData.mouseHit.distance}\n" +
-                                   $"Triangle index: {mouseData.mouseHit.triangleIndex}\n" +
-                                   $"TextureCoor1: {mouseData.mouseHit.textureCoord}\n" +
-                                   $"TextureCoor2: {mouseData.mouseHit.textureCoord2}\n" +
-                                   $"Rigidbody: {mouseData.mouseHit.rigidbody}\n" +
-                                   $"ArticulationBody: {mouseData.mouseHit.articulationBody}\n" +
-                                   $"LightmapCoord: {mouseData.mouseHit.lightmapCoord}";
-            else
-                description.text = $"Left button state: {mouseData.left.frameState}\n" +
-                             $"Right button state: {mouseData.right.frameState}\n" +
-                             $"Detected: null";
-        }
-        void CastRay()
-        {
-            RaycastHit hit;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
+            switch (settings.raycastType)
             {
-                mouseData.detectedSomething = true;
-                mouseData.mouseHit = hit;
-                return;
+                case MouseTool_Settings.RayFireType.Off:
+                    mouseData.detectedSomething = false;
+                    mouseData.hit = new RaycastHit();
+                    mouseData.hits = null;
+                    return;
+                case MouseTool_Settings.RayFireType.Nearest:
+                    mouseData.detectedSomething = Physics.Raycast(mouseData.mouseRay, out mouseData.hit, settings.maxRayDistance, settings.rayMask);
+                    mouseData.hits = null;
+                    break;
+                case MouseTool_Settings.RayFireType.All:
+                    mouseData.detectedSomething = Physics.Raycast(mouseData.mouseRay, out mouseData.hit, settings.maxRayDistance, settings.rayMask);
+                    if (mouseData.detectedSomething)
+                        mouseData.hits = Physics.RaycastAll(Camera.main.transform.position, mouseData.mouseRay.direction, settings.maxRayDistance, settings.rayMask);
+                    else mouseData.hits = null;
+                    break;
             }
-            mouseData.detectedSomething = false;
-            mouseData.mouseHit = hit;
-            //return info
+            //RaycastHit info
             //collider: The Collider that was hit. 
             //point: The impact point in world space where the ray hit the collider. 
             //normal: The normal of the surface the ray hit.
@@ -233,6 +189,19 @@ namespace Mouse_Tool
             //articulationBody: The ArticulationBody of the collider that was hit. If the collider is not attached to an articulation body then it is null.
             //lightmapCoord:  The uv lightmap coordinate at the impact point.
         }
+
+        public void ToggleMouseTracking()
+        {
+            if (run)
+                EndMouseTracking();
+            else
+                BeginMouseTracking();
+        }
+        private void ToggleMousePositionTracking()
+        {
+            settings.trackMousePositionOnScreen = !settings.trackMousePositionOnScreen;
+        }
+
         void BeginMouseTracking()
         {
             routine_mouseTracking = MouseTracking();
@@ -246,61 +215,21 @@ namespace Mouse_Tool
                 StopCoroutine(routine_mouseTracking);
                 routine_mouseTracking = null;
                 run = false;
-                SetScreenTextActiveState(false);
+                debug.SetScreenTextActiveState(transform, false);
             }
         }
-        public class MouseData
+        void OnApplicationQuit()
         {
-            public MouseButtonData left;
-            public MouseButtonData right;
+            EndMouseTracking();
+        }
+        void OnDrawGizmos()
+        {
+            if (mouseData != null)
+            {
+                debug.DrawTouchPoints(mouseData, settings.raycastType);
+                debug.DrawRay(Camera.main.transform.position, mouseData.mouseRay.direction * settings.maxRayDistance);
+            }
+        }
 
-            public bool detectedSomething;
-            public RaycastHit mouseHit;
-        }
-        public struct MouseButtonData
-        {
-            public float mostRecentClickTime;
-            public ButtonFrameState frameState;
-            public Vector3 positionAtClick;
-            public enum ButtonFrameState
-            {
-                Inactive,
-                Clicked,
-                Dragging,
-            }
-        }
-        #region logging
-        private void CheckDefines()
-        {
-            UnityEditor.BuildTargetGroup buildTargetGroup = UnityEditor.EditorUserBuildSettings.selectedBuildTargetGroup;
-            string defines = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(buildTargetGroup);
-            string[] split_defines = defines.Split(';');
-            bool contains = false;
-            for (int i = 0; i < split_defines.Length; i++)
-            {
-                if (split_defines[i] == "LOG")
-                    contains = true;
-            }
-            if (!contains && debug_logs)
-                UnityEngine.Debug.Log("The logs functionality requires for you " +
-                    "to have set a define symbol \"LOG\" in Project Settings -> Player -> Scripting Define Symbols. If you do not then the logs methods will not compile.");
-        }
-        [Conditional("LOG")]
-        void Log(string message)
-        {
-            if (debug_logs)
-            {
-                UnityEngine.Debug.Log(message);
-            }
-        }
-        [Conditional("LOG")]
-        void LogError(string message)
-        {
-            if (debug_logs)
-            {
-                UnityEngine.Debug.LogError(message);
-            }
-        }
-        #endregion
     }
 }
