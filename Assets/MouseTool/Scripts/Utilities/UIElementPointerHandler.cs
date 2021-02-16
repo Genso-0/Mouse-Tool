@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.EventSystems;
-namespace Mouse_Tool
+namespace Mouse_Tool.Utilities
 {
     public class UIElementPointerHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
     {

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-namespace Mouse_Tool
+namespace Mouse_Tool.Utilities
 {
     public class UIElementDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {

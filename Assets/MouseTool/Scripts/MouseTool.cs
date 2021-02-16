@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,20 +33,21 @@ namespace Mouse_Tool
         public MouseData mouseData;
         public MouseTool_Settings settings;
         public MouseTool_Debug debug;
-
+        public MouseTool_HitTables hitTables;
         bool run;
         public event Action onMouseDown_Left;
         public event Action onMouseDown_Right;
         public event Action onMouseUp_Left;
         public event Action onMouseUp_Right;
         public event Action onMouseDrag_Left;
-        public event Action onMouseDrag_Right;
+        public event Action onMouseDrag_Right; 
         void Init()
         {
             if (!initialized)
             {
                 initialized = true;
                 mouseData = new MouseData();
+                hitTables = new MouseTool_HitTables();
                 debug.InitText(GetComponentInChildren<Text>());
                 if (settings.runOnStartup)
                     BeginMouseTracking();
@@ -56,6 +58,7 @@ namespace Mouse_Tool
 #endif
             }
         }
+         
         void Start()
         {
             Init();
@@ -79,7 +82,7 @@ namespace Mouse_Tool
                         debug.ToggleDebugTouchPoints();
                 }
             }
-            else if(settings.receivingInput)
+            else if (settings.receivingInput)
             {
                 if (Input.GetKeyDown(KeyCode.Alpha1))
                     ToggleMousePositionTracking();
@@ -94,7 +97,7 @@ namespace Mouse_Tool
                     mouseData.mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
 
                 HandleRays();
-
+                hitTables.HandleHits(mouseData);
                 HandleButton(0, ref mouseData.left);
                 HandleButton(1, ref mouseData.right);
 

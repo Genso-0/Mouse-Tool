@@ -1,7 +1,7 @@
 ﻿
 using System.Collections;
 using UnityEngine;
-namespace Mouse_Tool
+namespace Mouse_Tool.Extras
 {
     public class ExampleListeningScript : MonoBehaviour
     {
