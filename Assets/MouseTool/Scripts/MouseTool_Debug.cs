@@ -70,7 +70,7 @@ namespace Mouse_Tool
                                        $"LeftShift + 4: Console Logs : {debug_logs}\n" +
                                        $"Left button state: {mouseData.left.frameState}\n" +
                                        $"Right button state: {mouseData.right.frameState}\n" +
-                                       $"Detected Colliders: {mouseData.hits.Length - 1}\n" +
+                                       $"Detected Colliders: {(mouseData.hits != null ? mouseData.hits.Length - 1 : 0)}\n" +
                                        $"Nearest: {mouseData.hit.collider.gameObject.name}\n" +
                                        $"Point: {mouseData.hit.point}\n" +
                                        $"Normal: {mouseData.hit.normal}\n" +

@@ -1905,88 +1905,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debugText
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: runOnStartup
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: receivingInput
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug_ScreenText
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug_logs
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: running
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: rayState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug_ray
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: MouseTrackingIsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: rayMask.m_Bits
-      value: 21
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: settings.runOnStartup
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: settings.receivingInput
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: settings.raycastType
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: settings.rayMask.m_Bits
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug.debug_rayTouchPoints
+      propertyPath: debug.debug_text
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug.debug_logs
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: debug.debug_ray
+      propertyPath: debug.MouseTrackingIsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: settings.trackMousePositionOnScreen
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: settings.maxRayDistance
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: hitTables.startTableSize
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597346, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: hitTables.currentTableSize
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5078182768529597347, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2035,14 +1963,6 @@ PrefabInstance:
     - target: {fileID: 5078182768529597357, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
       propertyPath: m_Name
       value: MouseTool
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768529597357, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5078182768689386809, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c0f5f4077df7e1429dee481c88bcd8e, type: 3}

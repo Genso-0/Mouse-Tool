@@ -44,11 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02dece752b36f4a47b4765c27b6298a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  differentiateBetweenSingleClickAndDrag_sensitivity: 0.2
-  run: 1
-  fireRay: 1
-  logs: 1
-  debugText: 1
+  settings:
+    differentiateBetweenSingleClickAndDrag_sensitivity: 0.2
+    runOnStartup: 1
+    receivingInput: 1
+    trackMousePositionOnScreen: 1
+    raycastType: 2
+    rayMask:
+      serializedVersion: 2
+      m_Bits: 1
+    maxRayDistance: 500
+  debug:
+    MouseTrackingIsActive: 0
+    debug_text: 0
+    debug_ray: 1
+    debug_logs: 0
+    debug_rayTouchPoints: 1
 --- !u!1 &5078182768689386809
 GameObject:
   m_ObjectHideFlags: 0
