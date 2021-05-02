@@ -13,8 +13,8 @@ C#
 2) Add MouseTool prefab to your scene.
  
 <!-- USAGE EXAMPLES -->
-## Usage
-See [ExampleListeningScript.cs](https://github.com/Genso-0/Mouse-Tool/blob/main/Assets/MouseTool/Scripts/ExampleListeningScript.cs) for usage examples.
+## Usage 
+See [ExampleListeningScript.cs](https://github.com/Genso-0/Mouse-Tool/blob/main/Assets/MouseTool/Scripts/Extras/ExampleListeningScript.cs) for usage examples.
 
 <!-- LICENSE -->
 ## License
